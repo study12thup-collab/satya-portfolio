@@ -1055,13 +1055,19 @@ async function adminLogin(){
   statusEl.style.color = 'var(--text-dim)';
   statusEl.textContent = 'Checking...';
   adminKey = key;
-  const ok = await loadOrders();
-  if(ok){
+  const result = await loadOrders();
+  if(result === true){
     sessionStorage.setItem('admin_key', key);
     showAdminDash();
   } else {
     statusEl.style.color = '#E0402A';
-    statusEl.textContent = 'Invalid passcode.';
+    if(result === 401){
+      statusEl.textContent = '⚠ Wrong passcode — please check and try again.';
+    } else if(typeof result === 'number'){
+      statusEl.textContent = `⚠ Server error (code ${result}). Try again in a moment.`;
+    } else {
+      statusEl.textContent = '⚠ Could not connect — check your internet connection.';
+    }
   }
 }
 function showAdminDash(){
@@ -1080,7 +1086,7 @@ async function loadOrders(){
         'Authorization': 'Bearer ' + window.__ANON_KEY
       }
     });
-    if(!res.ok){ return false; }
+    if(!res.ok){ return res.status; }
     const { data } = await res.json();
     renderOrders(data || []);
     return true;
