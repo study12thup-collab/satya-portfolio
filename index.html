@@ -1010,12 +1010,22 @@ document.getElementById('orderForm').addEventListener('submit', async (e)=>{
   statusEl.style.fontWeight = '400';
   statusEl.textContent = 'Submitting your order...';
 
-  let error;
-  try{
-    const result = await sbClient.from('orders').insert([payload]);
-    error = result.error;
-  }catch(err){
-    error = err;
+  async function attemptInsert(){
+    try{
+      const result = await sbClient.from('orders').insert([payload]);
+      return { error: result.error };
+    }catch(err){
+      return { error: err };
+    }
+  }
+
+  let { error } = await attemptInsert();
+
+  // Auto-retry once on a transient network failure (e.g. brief connectivity drop)
+  if(error && /fetch/i.test(error.message || '')){
+    statusEl.textContent = 'Connection hiccup — retrying...';
+    await new Promise(r => setTimeout(r, 1200));
+    ({ error } = await attemptInsert());
   }
 
   btn.disabled = false; btn.textContent = 'Submit Order →';
@@ -1023,7 +1033,11 @@ document.getElementById('orderForm').addEventListener('submit', async (e)=>{
   if(error){
     statusEl.style.color = '#E0402A';
     statusEl.style.fontWeight = '600';
-    statusEl.textContent = '⚠ Something went wrong — please try again. (' + (error.message || 'unknown error') + ')';
+    if(/fetch/i.test(error.message || '')){
+      statusEl.textContent = '⚠ Network connection failed. Please check your WiFi/mobile data and try again.';
+    } else {
+      statusEl.textContent = '⚠ Something went wrong — please try again. (' + (error.message || 'unknown error') + ')';
+    }
     console.error('Order submit error:', error);
   } else {
     statusEl.style.color = 'var(--orange)';
