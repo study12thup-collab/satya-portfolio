@@ -47,3 +47,11 @@ h1{font-family:'Sora',sans-serif;font-size:clamp(28px,5vw,40px);line-height:1.2;
 footer{border-top:1px solid var(--line);padding:28px 20px;text-align:center;font-size:13px;color:var(--text-dim);}
 footer a{color:var(--orange);text-decoration:none;}
 @media(max-width:640px){.nav-links{display:none;}.article{padding-top:32px;}}
+figure{margin:28px 0;}
+figure img{display:block;width:100%;height:auto;border-radius:16px;border:1px solid var(--line);}
+figure figcaption{font-size:13px;color:var(--text-dim);text-align:center;margin-top:8px;}
+figure.cover{margin:0 0 32px;}
+.card{overflow:hidden;}
+.card .thumb{display:block;width:calc(100% + 48px);max-width:none;height:auto;margin:-26px -24px 18px;border-bottom:1px solid var(--line);}
+.article a{color:var(--orange);}
+.article a.btn{color:#fff;}
