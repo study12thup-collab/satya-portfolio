@@ -277,7 +277,9 @@ nav{
   aspect-ratio:4/3; display:flex; align-items:center; justify-content:center;
   font-size:44px; position:relative; overflow:hidden;
 }
-.project-thumb::after{content:""; position:absolute; inset:0; background:inherit; filter:blur(0);}
+.project-thumb::before{content:""; position:absolute; width:62%; aspect-ratio:1; border-radius:50%; background:rgba(255,122,0,0.10); right:-14%; top:-22%;}
+.project-thumb .pt-icon{position:relative; z-index:1; width:96px; height:96px; border-radius:26px; background:#fff; display:flex; align-items:center; justify-content:center; font-size:46px; box-shadow:0 14px 34px rgba(255,122,0,0.18);}
+.project-thumb .pt-label{position:absolute; left:18px; bottom:14px; z-index:1; font-size:12px; font-weight:700; color:var(--orange); background:#fff; padding:5px 12px; border-radius:999px;}
 .project-body{padding:22px 24px;}
 .project-cat{font-size:12px; color:var(--orange); font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;}
 .project-body h3{font-size:18px; font-weight:700; margin-bottom:12px;}
@@ -843,7 +845,7 @@ function renderProjects(filter){
   const list = filter==="All" ? projects : projects.filter(p=>p.cat===filter);
   grid.innerHTML = list.map(p => `
     <div class="project-card reveal in">
-      <div class="project-thumb" style="background:${p.color};">${p.icon}</div>
+      <div class="project-thumb" style="background:${p.color};"><span class="pt-icon">${p.icon}</span><span class="pt-label">${p.cat}</span></div>
       <div class="project-body">
         <div class="project-cat">${p.cat}</div>
         <h3>${p.title}</h3>
