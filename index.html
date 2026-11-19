@@ -279,21 +279,6 @@ nav{
 }
 .project-thumb::before{content:""; position:absolute; width:62%; aspect-ratio:1; border-radius:50%; background:rgba(255,122,0,0.10); right:-14%; top:-22%;}
 .project-thumb .pt-icon{position:relative; z-index:1; width:96px; height:96px; border-radius:26px; background:#fff; display:flex; align-items:center; justify-content:center; font-size:46px; box-shadow:0 14px 34px rgba(255,122,0,0.18);}
-@keyframes ptFloat{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-10px) rotate(2deg);}}
-@keyframes ptDrift{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-14px,12px) scale(1.12);}}
-@keyframes ptSpin{to{transform:rotate(360deg);}}
-@keyframes ptPulse{0%{transform:scale(.8);opacity:.55;}100%{transform:scale(1.7);opacity:0;}}
-@keyframes ptSweep{0%{transform:translateX(-120%) skewX(-18deg);}60%,100%{transform:translateX(260%) skewX(-18deg);}}
-.project-thumb::before{animation:ptDrift 7s ease-in-out infinite;}
-.project-thumb .pt-icon{animation:ptFloat 4s ease-in-out infinite; transition:transform .4s ease;}
-.project-card:nth-child(2n) .pt-icon{animation-delay:-1.3s;}
-.project-card:nth-child(3n) .pt-icon{animation-delay:-2.4s;}
-.project-thumb .pt-ring{position:absolute; width:96px; height:96px; border-radius:26px; border:2px solid var(--orange); z-index:0; animation:ptPulse 2.8s ease-out infinite;}
-.project-thumb .pt-orbit{position:absolute; width:170px; height:170px; border:2px dashed rgba(255,122,0,0.35); border-radius:50%; z-index:0; animation:ptSpin 18s linear infinite;}
-.project-thumb .pt-orbit i{position:absolute; top:-6px; left:50%; width:12px; height:12px; margin-left:-6px; border-radius:50%; background:var(--orange);}
-.project-thumb .pt-shine{position:absolute; top:0; bottom:0; width:40%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent); z-index:2; animation:ptSweep 5s ease-in-out infinite; pointer-events:none;}
-.project-card:hover .pt-icon{transform:scale(1.12) rotate(-4deg);}
-@media(prefers-reduced-motion:reduce){.project-thumb::before,.project-thumb .pt-icon,.project-thumb .pt-ring,.project-thumb .pt-orbit,.project-thumb .pt-shine{animation:none;}}
 .project-thumb .pt-label{position:absolute; left:18px; bottom:14px; z-index:1; font-size:12px; font-weight:700; color:var(--orange); background:#fff; padding:5px 12px; border-radius:999px;}
 .project-body{padding:22px 24px;}
 .project-cat{font-size:12px; color:var(--orange); font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;}
@@ -437,12 +422,39 @@ footer{padding:60px 0 30px;}
   .field-row{grid-template-columns:1fr;}
 }
 
+
+/* ---------- PREMIUM MOTION ---------- */
+:root{--ease:cubic-bezier(.22,1,.36,1);}
+.reveal{opacity:0; transform:translateY(34px); filter:blur(6px); transition:opacity 1s var(--ease), transform 1s var(--ease), filter 1s var(--ease);}
+.reveal.in{opacity:1; transform:none; filter:none;}
+.services-grid .reveal:nth-child(3n+2),.projects-grid .reveal:nth-child(3n+2),.testi-grid .reveal:nth-child(3n+2){transition-delay:.1s;}
+.services-grid .reveal:nth-child(3n+3),.projects-grid .reveal:nth-child(3n+3),.testi-grid .reveal:nth-child(3n+3){transition-delay:.2s;}
+@keyframes mIn{from{opacity:0; transform:translateY(26px); filter:blur(8px);}to{opacity:1; transform:none; filter:none;}}
+.hero .badge,.hero h1,.hero-sub,.hero-btns{opacity:0; animation:mIn 1.1s var(--ease) forwards;}
+.hero .badge{animation-delay:.1s;} .hero h1{animation-delay:.25s;} .hero-sub{animation-delay:.42s;} .hero-btns{animation-delay:.58s;}
+.hero-visual{animation:mIn 1.3s var(--ease) .4s both;}
+.hero-blob{transition:transform .6s var(--ease); will-change:transform;}
+@keyframes mDrift{0%,100%{translate:0 0;}50%{translate:-26px 18px;}}
+.blob1{animation:mDrift 16s ease-in-out infinite;} .blob2{animation:mDrift 20s ease-in-out infinite reverse;}
+.hero h1 .hl{background:linear-gradient(100deg,var(--orange) 30%,#ffb066 50%,var(--orange) 70%); background-size:250% 100%; -webkit-background-clip:text; background-clip:text; color:transparent; animation:mShine 6s ease-in-out 1.4s infinite;}
+@keyframes mShine{0%{background-position:100% 0;}60%,100%{background-position:-100% 0;}}
+#scrollBar{position:fixed; top:0; left:0; height:2.5px; width:100%; transform-origin:0 50%; transform:scaleX(0); background:linear-gradient(90deg,var(--orange),#ffb066); z-index:9999; pointer-events:none;}
+.service-card,.project-card,.testi-card,.price-card{position:relative; transition:transform .7s var(--ease), box-shadow .7s var(--ease), border-color .4s ease, opacity 1s var(--ease), filter 1s var(--ease);}
+.service-card::after,.project-card::after,.testi-card::after,.price-card::after{content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; opacity:0; transition:opacity .5s ease; background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%), rgba(255,122,0,.13), transparent 45%);}
+.service-card:hover::after,.project-card:hover::after,.testi-card:hover::after,.price-card:hover::after{opacity:1;}
+.service-card:hover,.project-card:hover,.testi-card:hover{border-color:rgba(255,122,0,.35);}
+.project-thumb .pt-icon{transition:transform .8s var(--ease);}
+.project-card:hover .pt-icon{transform:translateY(-4px) scale(1.06);}
+.btn{transition:transform .5s var(--ease), box-shadow .5s var(--ease), background .3s, color .3s, border-color .3s;}
+.btn-primary:hover{transform:translateY(-2px);}
+@media(prefers-reduced-motion:reduce){.reveal,.hero .badge,.hero h1,.hero-sub,.hero-btns,.hero-visual{opacity:1!important; transform:none!important; filter:none!important; animation:none!important; transition:none!important;} .blob1,.blob2,.hero h1 .hl{animation:none!important;} #scrollBar{display:none;}}
 </style>
 </head>
 <body>
 
 <div class="cursor-glow" id="cursorGlow"></div>
 
+<div id="scrollBar"></div>
 <nav>
   <div class="nav-inner">
     <div class="logo" style="display:flex; align-items:center; gap:10px;">
@@ -860,7 +872,7 @@ function renderProjects(filter){
   const list = filter==="All" ? projects : projects.filter(p=>p.cat===filter);
   grid.innerHTML = list.map(p => `
     <div class="project-card reveal in">
-      <div class="project-thumb" style="background:${p.color};"><span class="pt-orbit"><i></i></span><span class="pt-ring"></span><span class="pt-icon">${p.icon}</span><span class="pt-shine"></span><span class="pt-label">${p.cat}</span></div>
+      <div class="project-thumb" style="background:${p.color};"><span class="pt-icon">${p.icon}</span><span class="pt-label">${p.cat}</span></div>
       <div class="project-body">
         <div class="project-cat">${p.cat}</div>
         <h3>${p.title}</h3>
@@ -1247,6 +1259,35 @@ document.getElementById('contactForm').addEventListener('submit', async (e)=>{
     e.target.reset();
   }
 });
+
+/* ---------- PREMIUM MOTION JS ---------- */
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var bar=document.getElementById('scrollBar'), ticking=false;
+  function upd(){
+    var h=document.documentElement.scrollHeight-innerHeight;
+    if(bar) bar.style.transform='scaleX('+(h>0?Math.min(1,scrollY/h):0)+')';
+    var b1=document.querySelector('.blob1'), b2=document.querySelector('.blob2');
+    if(scrollY<900){ if(b1) b1.style.transform='translateY('+(scrollY*0.12)+'px)'; if(b2) b2.style.transform='translateY('+(scrollY*-0.08)+'px)'; }
+    ticking=false;
+  }
+  addEventListener('scroll',function(){ if(!ticking){ticking=true; requestAnimationFrame(upd);} },{passive:true}); upd();
+  document.addEventListener('pointermove',function(e){
+    if(e.pointerType==='touch') return;
+    var c=e.target.closest&&e.target.closest('.service-card,.project-card,.testi-card,.price-card');
+    if(!c) return;
+    var r=c.getBoundingClientRect();
+    c.style.setProperty('--mx',(e.clientX-r.left)+'px'); c.style.setProperty('--my',(e.clientY-r.top)+'px');
+  },{passive:true});
+  var hv=document.querySelector('.hero-visual');
+  if(hv && matchMedia('(hover:hover)').matches){
+    document.querySelector('.hero').addEventListener('pointermove',function(e){
+      var x=(e.clientX/innerWidth-.5), y=(e.clientY/innerHeight-.5);
+      hv.style.transform='translate('+(x*-14)+'px,'+(y*-10)+'px)';
+    },{passive:true});
+    hv.style.transition='transform .8s cubic-bezier(.22,1,.36,1)';
+  }
+})();
 </script>
 
 </body>
